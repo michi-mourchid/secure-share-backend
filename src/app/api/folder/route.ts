@@ -1,7 +1,7 @@
 import { getDataFromToken } from "@/lib/helpers/getDataFromToken";
 import { error } from "console";
 import { NextRequest, NextResponse } from "next/server";
-import File from "@/models/fileModel";
+import Folder from "@/models/folderModel";
 
 
 
@@ -15,9 +15,9 @@ export async function GET(request: NextRequest, { params }: { params: { folderId
         return NextResponse.json({error: 'Erreur lors de la vérification du token '}, {status: 400});
     }
     if(search){
-        var filesRetrieved = await File.find({"fileName": {"$regex": search, "$options": "i"}, "userId": userId, "folderId": params.folderId}).select({"fileName":1, "fileType": 1, "fileData":0});
+        var filesRetrieved = await Folder.find({"fileName": {"$regex": search, "$options": "i"}, "userId": userId, "folderId": params.folderId}).select({"fileName":1, "fileType": 1, "fileData":0});
     } else {
-        var filesRetrieved = await File.find({"userId": userId, "folderId": params.folderId}).select({"fileName":1, "fileType": 1, "fileData": 0});
+        var filesRetrieved = await Folder.find({"userId": userId, "folderId": params.folderId}).select({"fileName":1, "fileType": 1, "fileData": 0});
     }
 
     if (filesRetrieved){
