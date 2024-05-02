@@ -10,8 +10,9 @@ connect()
 
 export async function POST(request: NextRequest){
     try {
-        const reqBody = await request.json()
-        const {email, password} = reqBody
+        const formData = await request.formData()
+        const email = formData.get('email') as string;
+        const password = formData.get('password') as string;
 
         const user = await User.findOne({email})
 
@@ -19,8 +20,7 @@ export async function POST(request: NextRequest){
             return NextResponse.json({error: "User does not exist"}, {status: 400})
         }
         
-        const validPassword = await bcryptjs.compare
-        (password, user.hashed_password)
+        const validPassword = await bcryptjs.compare(password, user.hashed_password);
         if(!validPassword){
             return NextResponse.json({error: "Invlid password"}, {status: 400})
         }

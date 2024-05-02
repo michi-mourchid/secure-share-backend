@@ -7,8 +7,11 @@ connect()
 
 export async function POST(request: NextRequest){
     try {
-        const reqBody = await request.json()
-        const {nom, prenom, email, password} = reqBody
+        const formData = await request.formData()
+        const nom = formData.get('nom');
+        const prenom = formData.get('prenom');
+        const email = formData.get('email') as string;
+        const password = formData.get('password') as string;
  
         const user = await User.findOne({email})
         if(user){
